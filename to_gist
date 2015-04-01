@@ -1,7 +1,6 @@
 {
   if hash curl 2>/dev/null && hash jq 2>/dev/null; then
     if [ ! -z "$GITHUB_TOKEN" ]; then
-      togist_clipboard=$(type pbcopy >/dev/null 2>&1 || type xclip >/dev/bull 2>&1)
       read togist_stdin
       togist_name="$(hostname).$(date +%s).out"
       togist_history_raw=$(history | tail -n 1)

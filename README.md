@@ -20,7 +20,7 @@ For now just copy `to_gist` to your /usr/local/bin directory.
 ## Example
 
 ```bash
-  echo "some output" | to_gist
+echo "some output" | to_gist
 ```
 
 This results in a new gist being created:

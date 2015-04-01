@@ -2,8 +2,11 @@
 
 Automagically copies bash output to a new gist.
 
-Accepts STDIN and uses bash history to figure out what commands were
-executed before togist was called in the pipe chain.
+Reads STDIN, creates a new gist, and copies the URL to your clipboard.
+This bash script runs in the context of your current shell and uses
+bash history to figure out which commands were executed previously
+in the pipe chain before togist was executed. This is kind of like
+metaprogramming in bash.
 
 ## Dependencies
 * GITHUB\_TOKEN environment variable (see [here](https://help.github.com/articles/creating-an-access-token-for-command-line-use/))

@@ -1,0 +1,43 @@
+{
+  if hash curl 2>/dev/null && hash jq 2>/dev/null; then
+    if [ ! -z "$GITHUB_TOKEN" ]; then
+      togist_clipboard=$(type pbcopy >/dev/null 2>&1 || type xclip >/dev/bull 2>&1)
+      read togist_stdin
+      togist_name="$(hostname).$(date +%s).out"
+      togist_history_raw=$(history | tail -n 1)
+      IFS=' ' read -ra togist_history_raw_tokens <<< $togist_history_raw
+      togist_cmd_raw="${togist_history_raw_tokens[@]:1}"
+      togist_cmd="${togist_cmd_raw% |*}"
+
+      togist_url=$(curl --silent -H "Authorization: bearer $GITHUB_TOKEN" \
+        -H "Accept: application/json" -H "Content-type: application/json" \
+        -X POST https://api.github.com/gists -d "
+      {
+        \"description\": \"${togist_cmd//\"/\\\"}\",
+        \"public\": false,
+        \"files\": {
+          \"$togist_name\": {
+            \"content\": \"${togist_stdin//\"/\\\"}\"
+          }
+        }
+      }" | jq -r '.html_url')
+
+      if hash pbcopy 2>/dev/null; then
+        echo $togist_url | pbcopy
+      elif hash xclip 2>/dev/null; then
+        echo $togist_url | xclip
+      else
+        echo $togist_url
+      fi
+    else
+      echo "togist: Missing GITUB_TOKEN."
+      echo "See https://help.github.com/articles/creating-an-access-token-for-command-line-use/"
+    fi
+  else
+    echo "togist: Missing one of the following dependencies:"
+    echo "* curl"
+    echo "* jq"
+    echo ""
+    echo "Please make sure all bins are included in your PATH and try again."
+  fi
+}

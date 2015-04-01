@@ -22,6 +22,6 @@ For now just copy `togist` to your /usr/local/bin directory.
 
 This results in a new gist:
 
-Name: bigmac.local.1427906198.out
-Description: echo "some output"
-Content: some output
+|Name|bigmac.local.1427906198.out|
+|Description|echo "some output"|
+|Content|some output|

@@ -2,11 +2,10 @@
   if hash curl 2>/dev/null && hash jq 2>/dev/null; then
     if [ ! -z "$GITHUB_TOKEN" ]; then
       read togist_stdin
-      togist_name="$(hostname).$(date +%s).out"
-      togist_history_raw=$(history | tail -n 1)
-      IFS=' ' read -ra togist_history_raw_tokens <<< $togist_history_raw
-      togist_cmd_raw="${togist_history_raw_tokens[@]:1}"
-      togist_cmd="${togist_cmd_raw% |*}"
+      togist_filename="$(hostname).$(date +%s).out"
+      IFS=' ' read -ra togist_cmd_tokens <<< $(history | tail -n 1)
+      togist_cmd_full="${togist_cmd_tokens[@]:1}"
+      togist_cmd="${togist_cmd_full% |*}"
 
       togist_url=$(curl --silent -H "Authorization: bearer $GITHUB_TOKEN" \
         -H "Accept: application/json" -H "Content-type: application/json" \
@@ -15,7 +14,7 @@
         \"description\": \"${togist_cmd//\"/\\\"}\",
         \"public\": false,
         \"files\": {
-          \"$togist_name\": {
+          \"$togist_filename\": {
             \"content\": \"${togist_stdin//\"/\\\"}\"
           }
         }

@@ -1,4 +1,4 @@
-# togist
+# to_gist
 
 Automagically copies bash output to a new gist.
 
@@ -15,12 +15,12 @@ metaprogramming in bash.
 
 ## Installation
 
-For now just copy `togist` to your /usr/local/bin directory.
+For now just copy `to_gist` to your /usr/local/bin directory.
 
 ## Example
 
 ```bash
-  echo "some output" | togist
+  echo "some output" | to_gist
 ```
 
 This results in a new gist being created:

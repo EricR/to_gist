@@ -1,6 +1,6 @@
 # to_gist
 
-Automagically copies bash output to a new gist.
+Automagically pipe bash output to a new gist.
 
 Reads STDIN, creates a new gist, and copies the URL to your clipboard.
 This bash script runs in the context of your current shell and uses

@@ -1,3 +1,4 @@
+#!/bin/bash
 {
   if hash curl 2>/dev/null && hash jq 2>/dev/null; then
     if [ ! -z "$GITHUB_TOKEN" ]; then

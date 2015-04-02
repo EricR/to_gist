@@ -20,7 +20,7 @@ use. You can find more information about that [here](https://help.github.com/art
 ## Example
 
 What better way to demonstrate to\_gist than with a real example? The
-following generated [this gist](https://gist.github.com/91fe774c9a174befb7a1):
+following generated [this gist](https://gist.github.com/EricR/89283fc8263d17d447c8):
 
 ```bash
 export GITHUB_TOKEN="...redacted..."

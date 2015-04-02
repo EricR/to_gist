@@ -7,7 +7,7 @@ This bash script runs in the context of your current shell, and uses
 bash history to figure out which commands were executed previously
 in the pipe chain before to\_gist was executed.
 
-![](http://ericrafaloff.com/images/to_gist.gif)
+![](http://ericrafaloff.com/images/to_gist.gif?1)
 
 ## Installation
 

@@ -1,31 +1,41 @@
 {
   if hash curl 2>/dev/null && hash jq 2>/dev/null; then
     if [ ! -z "$GITHUB_TOKEN" ]; then
-      read togist_stdin
-      togist_filename="$(hostname).$(date +%s).out"
-      IFS=' ' read -ra togist_cmd_tokens <<< $(history | tail -n 1)
-      togist_cmd_full="${togist_cmd_tokens[@]:1}"
-      togist_cmd="${togist_cmd_full% |*}"
+      # Read STDIN and escape quotes
+      to_gist_stdin=`cat`
+      to_gist_stdin="${to_gist_stdin//\"/\\\"}"
 
-      togist_url=$(curl --silent -H "Authorization: bearer $GITHUB_TOKEN" \
+      # Filename is unique by hostname and UNIX timestamp
+      to_gist_filename="$(hostname).$(date +%s).stdout"
+
+      # Content is JSON-safe STDIN
+      to_gist_content=`echo "{\"content\": \"${to_gist_stdin%x}\"}" | jq -c '.'`
+
+      # Tokenize Bash history and extract last commands executed
+      IFS=' ' read -ra to_gist_description <<< $(history | tail -n 1)
+      to_gist_description="${to_gist_description[@]:1}"
+      to_gist_description="${to_gist_description% |*}"
+      to_gist_description="${to_gist_description//\"/\\\"}"
+
+      # Make HTTP request to gist API, parse request, and extract the HTML URL
+      to_gist_url=$(curl --silent -H "Authorization: bearer $GITHUB_TOKEN" \
         -H "Accept: application/json" -H "Content-type: application/json" \
         -X POST https://api.github.com/gists -d "
       {
-        \"description\": \"${togist_cmd//\"/\\\"}\",
+        \"description\": \"$to_gist_description\",
         \"public\": false,
         \"files\": {
-          \"$togist_filename\": {
-            \"content\": \"${togist_stdin//\"/\\\"}\"
-          }
+          \"$to_gist_filename\": $to_gist_content
         }
       }" | jq -r '.html_url')
 
+      # Send HTML URL to system clipboard
       if hash pbcopy 2>/dev/null; then
-        echo $togist_url | pbcopy
+        echo $to_gist_url | pbcopy
       elif hash xclip 2>/dev/null; then
-        echo $togist_url | xclip
+        echo $to_gist_url | xclip
       else
-        echo $togist_url
+        echo $to_gist_url
       fi
     else
       echo "togist: Missing GITUB_TOKEN."

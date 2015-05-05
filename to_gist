@@ -37,6 +37,8 @@
       else
         echo $to_gist_url
       fi
+      echo "Your gist has been created and has been copied to your clipboard."
+      echo "It's available at ${to_gist_url}."
     else
       echo "to_gist: Missing GITHUB_TOKEN."
       echo "See https://help.github.com/articles/creating-an-access-token-for-command-line-use/"
